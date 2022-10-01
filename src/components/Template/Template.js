@@ -10,11 +10,16 @@ import useApi from '../../hooks/useApi';
 import issLocation from '../../api/iss-now';
 import calcPosFromLatLonRad from '../../utils/calcPosFromLatLong';
 
+
 const Template = () => {
+
+  const scene = new THREE.Scene();
   //Groups
   const iss = new THREE.Group();
+  const iss2 = new THREE.Group();
   const earth = new THREE.Group();
-
+ 
+ 
   const mountRef = useRef(null);
   const loading = useLoading();
 
@@ -39,6 +44,25 @@ const Template = () => {
     });
 
     iss.position.set(pos.x, pos.y, pos.z);
+    iss2.position.set(pos.x * 2, pos.y * 2, pos.z * 2);
+ 
+    
+      // "latitude":12.580069521117,"longitude":93.249500623023,"altitude":416.89835105496
+    const curve = new THREE.QuadraticBezierCurve3(
+      new THREE.Vector3( iss.position.x, iss.position.y, iss.position.z ),
+      new THREE.Vector3( iss.position.x * 1.5, iss.position.y * 1.5, iss.position.z * 1.5 ),
+      new THREE.Vector3( iss.position.x * 2, iss.position.y * 2, iss.position.z * 2 ),
+    );
+
+    const points = curve.getPoints( 10 );
+    const geometry = new THREE.BufferGeometry().setFromPoints( points );
+
+    const material = new THREE.LineBasicMaterial( { color: 0xff00ff } );    
+    // Create the final object to add to the scene
+    const curveObject = new THREE.Line( geometry, material );
+    scene.add(curveObject);
+
+
   };
 
   useEffect(() => {
@@ -47,7 +71,6 @@ const Template = () => {
     const { clientWidth: width, clientHeight: height } = currentRef;
 
     //Scene, camera, renderer
-    const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(25, width / height, 0.1, 100);
     scene.add(camera);
     camera.position.set(3, 3, 3);
@@ -93,6 +116,18 @@ const Template = () => {
       }
     );
 
+    gltfLoader.load(
+      './models/iss/issDraco.gltf',
+      (gltf) => {
+        gltf.scene.scale.set(0.01, 0.01, 0.01);
+        iss2.add(gltf.scene);
+        scene.add(iss2);
+      },
+      () => {
+        loading.navigate(true);
+      }
+    );
+
     //Earth Model
     gltfLoader.load(
       './models/earth/earthDraco.gltf',
@@ -111,6 +146,24 @@ const Template = () => {
       }
     );
 
+    /*
+    const material = new THREE.LineBasicMaterial({
+      color: 0xffffff
+    });
+    
+    const points = [];
+    points.push( new THREE.Vector3( iss.position.x, iss.position.y, iss.position.z ) );
+    points.push( new THREE.Vector3( iss2.position.x, iss2.position.y, iss2.position.z ) );
+    points.push( new THREE.Vector3( iss2.position.x * 1.5, iss2.position.y * 1.5, iss2.position.z * 1.5 ) );
+    points.push( new THREE.Vector3( iss2.position.x * 2, iss2.position.y * 2, iss2.position.z * 2 ) );
+    
+    const geometry = new THREE.BufferGeometry().setFromPoints( points );
+    
+    const line = new THREE.Line( geometry, material );
+    scene.add( line );
+    */
+
+ 
     //Light
     const ambientLight = new THREE.AmbientLight(0xffffff, 1);
     scene.add(ambientLight);

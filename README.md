@@ -4,8 +4,7 @@ This is a small project that makes use of the [Three.js](https://threejs.org/) l
 
 ## Links
 
-- [GitHub](https://github.com/maoc06/ISS_3D_tracking)
-- [Live](https://iss3dtracking.vercel.app/)
+- [GitHub](https://github.com/Manuelir/spaceappsvlc22)
 
 ## Setup
 

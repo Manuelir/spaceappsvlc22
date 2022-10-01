@@ -8,6 +8,7 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
 import { useLoading } from '../../lib/loading';
 import useApi from '../../hooks/useApi';
 import issLocation from '../../api/iss-now';
+import issPath from '../../api/iss-path';
 import calcPosFromLatLonRad from '../../utils/calcPosFromLatLong';
 
 
@@ -16,10 +17,8 @@ const Template = () => {
   const scene = new THREE.Scene();
   //Groups
   const iss = new THREE.Group();
-  const iss2 = new THREE.Group();
   const earth = new THREE.Group();
- 
- 
+
   const mountRef = useRef(null);
   const loading = useLoading();
 
@@ -30,6 +29,7 @@ const Template = () => {
     velocity: 0.0,
   });
   const getIssLocationNow = useApi(issLocation.getIssLocationNow);
+  const getIssPathNow = useApi(issPath.getIssPath);
 
   const getIssLocation = async () => {
     const issLocation = await getIssLocationNow.request();
@@ -44,26 +44,33 @@ const Template = () => {
     });
 
     iss.position.set(pos.x, pos.y, pos.z);
-    iss2.position.set(pos.x * 2, pos.y * 2, pos.z * 2);
- 
-    
-      // "latitude":12.580069521117,"longitude":93.249500623023,"altitude":416.89835105496
-    const curve = new THREE.QuadraticBezierCurve3(
-      new THREE.Vector3( iss.position.x, iss.position.y, iss.position.z ),
-      new THREE.Vector3( iss.position.x * 1.5, iss.position.y * 1.5, iss.position.z * 1.5 ),
-      new THREE.Vector3( iss.position.x * 2, iss.position.y * 2, iss.position.z * 2 ),
-    );
+  };
 
-    const points = curve.getPoints( 10 );
+  const getIssPath = async () => {
+    const issPath = await getIssPathNow.request();
+    const data = issPath.data;
+
+    const points = [];
+    for (const property in data) {
+      const { altitude, latitude, longitude, velocity } = data[property];
+      const pos = calcPosFromLatLonRad({
+        lat: latitude,
+        lon: longitude,
+        radius: 1,
+      });
+  
+      points.push( new THREE.Vector3( pos.x, pos.y, pos.z ) );
+    }
+
+    console.log ("Time: " + (new Date().getTime()));
+
     const geometry = new THREE.BufferGeometry().setFromPoints( points );
-
-    const material = new THREE.LineBasicMaterial( { color: 0xff00ff } );    
+    const material = new THREE.LineBasicMaterial( { color: 0xaaaaaa } );    
     // Create the final object to add to the scene
     const curveObject = new THREE.Line( geometry, material );
     scene.add(curveObject);
-
-
   };
+
 
   useEffect(() => {
     //Data from the canvas
@@ -79,6 +86,9 @@ const Template = () => {
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(width, height);
     currentRef.appendChild(renderer.domElement);
+
+    //PAint path
+    getIssPath();
 
     //Interval update position
     const interval = setInterval(() => getIssLocation(), 5000);
@@ -107,21 +117,9 @@ const Template = () => {
     gltfLoader.load(
       './models/iss/issDraco.gltf',
       (gltf) => {
-        gltf.scene.scale.set(0.02, 0.02, 0.02);
+        gltf.scene.scale.set(0.005, 0.005, 0.005);
         iss.add(gltf.scene);
         scene.add(iss);
-      },
-      () => {
-        loading.navigate(true);
-      }
-    );
-
-    gltfLoader.load(
-      './models/iss/issDraco.gltf',
-      (gltf) => {
-        gltf.scene.scale.set(0.01, 0.01, 0.01);
-        iss2.add(gltf.scene);
-        scene.add(iss2);
       },
       () => {
         loading.navigate(true);
@@ -146,24 +144,6 @@ const Template = () => {
       }
     );
 
-    /*
-    const material = new THREE.LineBasicMaterial({
-      color: 0xffffff
-    });
-    
-    const points = [];
-    points.push( new THREE.Vector3( iss.position.x, iss.position.y, iss.position.z ) );
-    points.push( new THREE.Vector3( iss2.position.x, iss2.position.y, iss2.position.z ) );
-    points.push( new THREE.Vector3( iss2.position.x * 1.5, iss2.position.y * 1.5, iss2.position.z * 1.5 ) );
-    points.push( new THREE.Vector3( iss2.position.x * 2, iss2.position.y * 2, iss2.position.z * 2 ) );
-    
-    const geometry = new THREE.BufferGeometry().setFromPoints( points );
-    
-    const line = new THREE.Line( geometry, material );
-    scene.add( line );
-    */
-
- 
     //Light
     const ambientLight = new THREE.AmbientLight(0xffffff, 1);
     scene.add(ambientLight);

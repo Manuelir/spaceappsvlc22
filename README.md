@@ -1,4 +1,4 @@
-# :satellite: About ISS 3D Tracking
+# :satellite: About ISS Tracking by Prueba Rana
 
 This is a small project that makes use of the [Three.js](https://threejs.org/) library to make use of 3D models and render them on the web. This application obtains the location data of the International Space Station (ISS) :rocket: and maps them in real time on the 3D model of the Earth.
 
@@ -35,4 +35,4 @@ npm run start
 - [ISS](https://skfb.ly/6oOBH) by uperesito is licensed under [Creative Commons Attribution](http://creativecommons.org/licenses/by/4.0/).
 
 ## Forked Project
-- [Miguel Orrego](https://github.com/maoc06/ISS_3D_tracking)
+- [ISS 3D Tracking](https://github.com/maoc06/ISS_3D_tracking) by Miguel Orrego

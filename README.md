@@ -12,6 +12,15 @@ Download [Node.js](https://nodejs.org/en/download/).
 Run this followed commands:
 
 ```bash
+# update ubuntu
+sudo apt update
+
+# instal npm and node
+sudo apt install nodejs npm
+```
+
+
+```bash
 # Install dependencies (only the first time)
 npm install
 

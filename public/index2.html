@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<title>IIS Tracking</title><meta charset="utf-8">
+<meta name="robots" content="index,follow">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=2.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<link rel="icon" sizes="32x32" href="">
+<link rel="icon" sizes="192x192" href="">
+<link rel="apple-touch-icon" href="">
+<link rel="apple-touch-icon-precomposed" href="">
+<link rel="apple-touch-startup-image" href="">
+<meta name="msapplication-square70x70logo" content="">
+<meta name="msapplication-square150x150logo" content="">
+<meta name="msapplication-wide310x150logo" content="">
+<meta name="msapplication-square310x310logo" content="">
+<meta name="theme-color" content="#000"><meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta property="og:title" content="">
+<meta property="og:description" content="">
+<meta property="og:image" content="">
+<meta property="og:url" content="">
+<meta property="og:type" content="website">
+<meta name="twitter:text:title" content="">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="twitter:site">
+<style>
+:root{--colorBlanco:#FFF;--colorNegro:#000;
+--espacio:30px;--espaciox2:calc(var(--espacio)*2);--espaciox4:calc(var(--espacio)*4);--espacio-2:calc(var(--espacio)/2);--espacio-4:calc(var(--espacio)/4);
+--bBoton:#0422ad;--cBoton:#FFF;--bBotonHover:#22ad04;--cBotonHover:#FFF;
+}
+@media (min-width:1367px){:root{--AnchoContenido:1550px}}
+*{box-sizing:border-box;border:0;outline:0;font-family:-apple-system,BlinkMacSystemFont,Roboto,"Segoe UI","Helvetica Neue",Arial;max-width:100%;line-height:1.4}
+BODY{grid-template-columns:1fr;justify-self:center;align-self:center;grid-template-areas:"header" "main" "footer"}
+HEADER{grid-area:header}
+MAIN{grid-area:main}
+FOOTER{grid-area:footer}
+BODY,H1,H2,H3,H4,UL{margin:0}
+A,A:visited,A:hover{text-decoration:none}
+A,A:visited{} 
+A:hover{}
+SVG{fill:currentColor}
+.grid{display:grid;grid-gap:var(--espaciox2);padding:var(--espaciox2) 0}
+.col2{grid-template-columns:repeat(2,1fr)}.col3{grid-template-columns:repeat(3,1fr)}.col4{grid-template-columns:repeat(4,1fr)}
+.tCen{text-align:center}.tDer{text-align:right}.tIzq{text-align:left}
+.tMayus{text-transform:uppercase}
+.none{display:none}
+.gap0{grid-gap:0}
+.padding0{padding:0}.padding-2{padding:var(--espacio-2)}
+.relative{position:relative}.absolute{position:absolute}
+.t08{font-size:.8rem}.t07{font-size:.7rem}
+.contenido{margin:0 auto;max-width:var(--AnchoContenido);padding:5% var(--espaciox2)}
+@media (max-width:540px){
+	:root{--SeparacionColumnas:15px}
+	.grid{display:grid;grid-gap:var(--espacio);padding:var(--espacio) 0}
+	.colm1{grid-template-columns:1fr}.colm2{grid-template-columns:repeat(2,1fr)}.colm3{grid-template-columns:repeat(3,1fr)}.colm4{grid-template-columns:repeat(4,1fr)}
+	.contenido{padding:0 var(--espacio)}
+}
+.boton{display:flex;align-items:center;justify-content:center;padding: 0.8rem;text-transform:uppercase;background:var(--bBoton);color:var(--cBoton)}
+.boton:hover{background:var(--bBotonHover);color:var(--cBotonHover)}
+.boton SVG{margin-left:.5rem}
+</style>
+<style>
+BODY{background:#000 url(imagenes/pantalla.jpg) center center fixed}
+@media (max-width:540px){
+	BODY{background:#000 url(imagenes/movil.jpg)}
+}
+@media (max-width:1367){
+	BODY{background:#000 url(imagenes/portatil.jpg)}
+}
+MAIN{display:flex;height:100vh;align-items:center;justify-content:center;background:rgb(0 0 0 / 50%)}
+MAIN a{display:block;transition:.3s ease-in-out}
+MAIN a:hover{transition:.3s ease-in-out;transform:scale(1.05)}
+MAIN a:hover IMG{filter: drop-shadow(1px 1px 20px #3453c2)}
+MAIN a:hover H1{text-shadow: 1px 1px 40px #3453c2}
+h1{font-size:5rem;color:#FFF;text-shadow:1px 1px 10px black;display:block}
+h1 span{font-weight:100}
+.copyright{position:fixed;bottom:15px;color:#FFF;font-size:10px;font-weight:100;letter-spacing:.5px}
+.iss{filter: drop-shadow(1px 1px 20px #ffffdb);}
+</style></head>
+<body>
+<header></header>
+<main>
+	<a href="index.html" class="tCen">
+	<img class="iss" alt="iss" src="imagenes/iss.png" width="160px" height="" decoding="async">
+	<h1>ISS TRACKING <span>v.2</span></h1>
+	
+	</a>
+	<div class="copyright">TEAM @PruebaRana</div>
+</main>
+<footer>
+</footer>
+</body>
+</html>

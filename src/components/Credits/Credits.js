@@ -18,7 +18,7 @@ const Credits = () => {
       <p>
         Seguimiento de la ISS para Space App (
         <a
-          href="https://google.es"
+          href="https://github.com/Manuelir/spaceappsvlc22"
           target="_blank"
           rel="noreferrer"
         >

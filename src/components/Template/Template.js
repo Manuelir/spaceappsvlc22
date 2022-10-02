@@ -31,21 +31,58 @@ const Template = () => {
   const getIssLocationNow = useApi(issLocation.getIssLocationNow);
   const getIssPathNow = useApi(issPath.getIssPath);
 
+  var position_original;
+  var position_current;
+  var positions = [];
+  var interval_paint;
+  // TODO: sacar a un parametro el tiempo de refresco y que se calcule solo
+
   const getIssLocation = async () => {
     const issLocation = await getIssLocationNow.request();
-    const { altitude, latitude, longitude, velocity } = issLocation.data;
+    var { altitude, latitude, longitude, velocity } = issLocation.data;
 
-    setIssInfo({ altitude, latitude, longitude, velocity });
+    position_current = { altitude, latitude, longitude, velocity }; 
+    if (position_original == null) {
+      position_original = position_current;
+    }
+
+    var altitude_dif  = (position_current.altitude - position_original.altitude) / 20;
+    var latitude_dif  = (position_current.latitude - position_original.latitude) / 20;
+    var longitude_dif = (position_current.longitude - position_original.longitude) / 20;
+    var velocity_dif  = (position_current.velocity - position_original.velocity) / 20;
+    altitude  = position_original.altitude;
+    latitude  = position_original.latitude;
+    longitude = position_original.longitude;
+    velocity  = position_original.velocity;
+    for (var i = 0; i < 20; i++) {
+      positions.push( {altitude, latitude, longitude, velocity }); 
+      altitude  = altitude  + altitude_dif;
+      latitude  = latitude  + latitude_dif;
+      longitude = longitude + longitude_dif;
+      velocity  = velocity  + velocity_dif;
+    }
+    position_original = position_current;
+
+    if (interval_paint == null) {
+      interval_paint = setInterval(() => paintIssLocation(), 500);
+    }
+  };
+
+  const paintIssLocation = async () => {
+
+    var position_current = positions.shift();
+
+    setIssInfo( position_current );
 
     const pos = calcPosFromLatLonRad({
-      lat: latitude,
-      lon: longitude,
+      lat: position_current.latitude,
+      lon: position_current.longitude,
       radius: 1,
     });
 
     iss.position.set(pos.x, pos.y, pos.z);
-  };
-
+  }
+  
   const getIssPath = async () => {
     const issPath = await getIssPathNow.request();
     const data = issPath.data;
@@ -91,7 +128,8 @@ const Template = () => {
     getIssPath();
 
     //Interval update position
-    const interval = setInterval(() => getIssLocation(), 5000);
+    getIssLocation();
+    const interval = setInterval(() => getIssLocation(), 10000);
 
     //OrbitControls
     const orbitControls = new OrbitControls(camera, renderer.domElement);

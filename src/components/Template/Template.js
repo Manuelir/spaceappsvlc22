@@ -54,13 +54,35 @@ const Template = () => {
     latitude  = position_original.latitude;
     longitude = position_original.longitude;
     velocity  = position_original.velocity;
+    const points = [];
     for (var i = 0; i < 20; i++) {
       positions.push( {altitude, latitude, longitude, velocity }); 
       altitude  = altitude  + altitude_dif;
       latitude  = latitude  + latitude_dif;
       longitude = longitude + longitude_dif;
       velocity  = velocity  + velocity_dif;
+
+      // Path
+      const pos = calcPosFromLatLonRad({
+        lat: latitude,
+        lon: longitude,
+        radius: 1,
+      });
+      points.push( new THREE.Vector3( pos.x, pos.y, pos.z ) );
     }
+    const pos = calcPosFromLatLonRad({
+      lat: latitude  + latitude_dif,
+      lon: longitude + longitude_dif,
+      radius: 1,
+    });
+    points.push( new THREE.Vector3( pos.x, pos.y, pos.z ) );
+
+    const geometry = new THREE.BufferGeometry().setFromPoints( points );
+    const material = new THREE.LineBasicMaterial( { color: 0xff00ff } );    
+    // Create the final object to add to the scene
+    const curveObject = new THREE.Line( geometry, material );
+    scene.add(curveObject);
+
     position_original = position_current;
 
     if (interval_paint == null) {

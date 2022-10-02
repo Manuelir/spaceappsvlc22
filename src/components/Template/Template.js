@@ -99,8 +99,6 @@ const Template = () => {
       points.push( new THREE.Vector3( pos.x, pos.y, pos.z ) );
     }
 
-    console.log ("Time: " + (new Date().getTime()));
-
     const geometry = new THREE.BufferGeometry().setFromPoints( points );
     const material = new THREE.LineBasicMaterial( { color: 0xaaaaaa } );    
     // Create the final object to add to the scene

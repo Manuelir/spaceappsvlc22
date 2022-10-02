@@ -10,8 +10,6 @@ for (let i = 0; i < 40; i++) {
     timestamp = timestamp - 120;
 }
 
-console.log ("URL: " + endpoint + times.toString());
-
 const getIssPath = async () => await client.get(endpoint + times.toString());
 
 const opIssPath = { getIssPath };
